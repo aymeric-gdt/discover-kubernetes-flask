@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: volume-operation-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: volume-operation
+        image: busybox
+        command: ["/bin/sh", "-c", "echo 'Performing operation' > /data/operation.txt"]
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data
+      restartPolicy: Never
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: backend-pvc
